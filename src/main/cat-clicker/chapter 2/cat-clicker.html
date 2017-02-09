@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+	    <script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
+
+          <style type="text/css">
+                
+                #image-content{
+                    width: 100%;
+                    text-align: center;
+                }
+
+                #count-content{
+                    width: 100%;
+                    text-align: center;
+                }
+
+                .cat-image {
+                    width: 200px;
+                    height: 200px;
+                }
+
+          </style>
+    </head>
+    <body>
+    	<!--Image Content -->
+        <div id="image-content">
+            <img class="cat-image" src="cat1.jpg" title="Marvin" alt="Marvin"/>
+            <img class="cat-image" src="cat2.jpg" title="Milk" alt="Milk"/>    
+            <img class="cat-image" src="cat2.jpg" title="Cat3" alt="Cat3"/>    
+        </div><!--End Image Content -->
+        
+        <div id="count-content"></div>
+        
+        <script type="text/javascript">
+    
+            var catImages = $('.cat-image');
+            var countContent = $('#count-content');
+            var cats = [];
+
+            var printMessage = function(content){
+                countContent.html(content);
+            };            
+
+            catImages.each(function(i, cat){
+                cats.push({
+                    'name': cat.title, 
+                    'numberOfClicks': 0
+                });
+            });
+            
+            catImages.click(function(){
+                
+                var name = this.title;
+
+                $.each(cats, function(i, cat){
+                    if(cat.name===name){
+                        cat.numberOfClicks++;
+                    }                    
+                });
+
+                var message = "";
+
+                $.each(cats, function(i, cat){
+                    message += cat.name + " clicks: " + cat.numberOfClicks + "<br>";
+                });
+                
+                printMessage(message);
+            });
+
+        </script>
+    </body>
+</html>
