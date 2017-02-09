@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+	    <script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
+
+          <style type="text/css">
+                
+                #list-content{
+                    width: 100%;
+                }
+                .image{
+                    width: 200px;
+                    height: :200px;
+                }
+          </style>
+    </head>
+    <body>
+    	<!--Image Content -->
+        <div id="list-content">
+            <ul></ul>
+        </div><!--End Image Content -->
+        <div id="display-content"></div>   
+        
+        <script type="text/javascript">
+
+        ((function(){
+
+            var data = [
+                {name: 'Marvin', image: 'images/cats/cat1.jpg', clicks: 0 },
+                {name: 'Milk', image: 'images/cats/cat2.jpg', clicks: 0 },
+                {name: 'Black', image: 'images/cats/cat3.jpg', clicks: 0 }
+            ];
+
+            var controller = {
+                getCatList: function(){
+                    return data;
+                }
+            };
+
+            var view = {
+                init: function(){
+                    this.listContent = $("#list-content ul");
+                    this.displayContent = $("#display-content");
+                    
+                    this.render();
+                },
+                render: function(){
+                    var listContent = this.listContent;
+                    var displayContent = this.displayContent;
+                    var list = controller.getCatList();
+
+                    
+                    list.forEach( cat => listContent.append('<li class="cat-name" title="' + cat.name + '">' + cat.name + '</li>'));   
+
+                    var catNames = $('.cat-name'); 
+
+                    catNames.click(function(){
+                        var name =  this.title;
+
+                        var cat = list.find(cat => cat.name === name );
+
+                        cat.clicks++;
+
+                        var message = "<br>" + cat.name + " clicks: " + cat.clicks + "<br>";
+
+                        displayContent.html('<img class="image" src="' + cat.image + '" title="' + cat.name + '"/>' + message);
+                    });   
+                }
+            };
+
+            view.init();
+        })());
+
+        </script>
+    </body>
+</html>

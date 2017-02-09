@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+	    <script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
+    </head>
+    <body>
+    	<button id="add-pizza">Adicionar Pizza</button>
+    	<ul id="pizza-list"></ul>
+
+    	<script type="text/template" data-template="pizza">
+			<li class="pizza" data-id="{{id}}">
+				{{id}}
+					<a href="#" class="remove-pizza">remove</a>
+			</li>
+    	</script>
+
+    	<script type="text/javascript">
+    		// Shorthand for $( document ).ready()
+			$(function() {
+			    var data = {
+    				lastId: 0,
+    				pizzas: []
+    			};
+
+    			var controller = {
+    				addPizza: function(){
+    					var lastId = ++data.lastId;
+    					
+    					data.pizzas.push({
+    						'id': lastId,
+    						'visible': true
+    					});
+
+    					view.render();
+    				},
+
+    				removePizza: function(pizza) {
+    					var clickedPizza = data.pizzas[ pizza.id - 1 ];
+    					clickedPizza.visible = false;
+    					view.render();
+    				},
+
+    				getVisiblePizzas: function(){
+    					var visiblePizzas = data.pizzas.filter( function(pizza) {
+    						return pizza.visible;
+    					});
+
+    					return visiblePizzas;
+    				},
+
+    				init: function(){
+    					view.init();
+    				}
+    			
+    			};
+
+    			var view  = {
+    				init: function() {
+    					var addPizzaBtn = $("#add-pizza");
+    					addPizzaBtn.click(function() {
+    						controller.addPizza();
+    					});
+
+    					this.pizzaTemplate = $('script[data-template="pizza"]').html();
+    					this.pizzaList = $('#pizza-list');
+
+    					this.pizzaList.on('click', '.remove-pizza', function(e) {
+    						
+    						console.log($(this).parents('.pizza').data());
+    						var pizza = $(this).parents('.pizza').data();
+    						controller.removePizza(pizza);
+    						return false;
+    					});
+
+    					this.render();
+    				},
+    				render: function(){
+    					var pizzaList = this.pizzaList, 
+    						pizzaTemplate = this.pizzaTemplate;
+
+    					pizzaList.html('');
+
+    					controller.getVisiblePizzas().forEach(function(pizza){
+    						var thisTemplate = pizzaTemplate.replace(/{{id}}/g, pizza.id);
+    						pizzaList.append(thisTemplate);
+    					});
+    				}
+    			}
+
+    			controller.init();
+			});
+    	</script>
+    </body>
+</html>
